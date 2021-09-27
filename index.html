@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="heading">
+            <button id="back" onclick="goback()">&#8249</button>
+
+            <div id="heading_text"></div>
+
+            <button id="next" onclick="gonext()">&#8250</button>
+
+            <table id="table"></table>
+
+        </div>
+        <div class="task_form">
+            <div class="f">
+                <h1>Task Here</h1>
+                <form>
+                    <label class="enter_task">Enter the task</label>
+                    <input type="text" id="task" class="design" placeholder="Tasks.............">
+                    <br></br>
+                    <label class="enter_task">Date:</label>
+                    <div id="task_date" class="design_date"> Select From The Calendar</div>
+                </form>
+                <div class="buttons">
+                    <button onclick="add()" class="b_add">ADD</button>
+                </div>
+            </div>
+            <div class="add_task" id="task_add">
+                <h1>Tasks</h1>
+                <ul id="task_list">
+                </ul>
+            </div>
+        </div>
+        <div class="t">
+            <div id="timer">
+                <div class="h" id="hi">00</div>
+                <div class="m" id="mi">00</div>
+                <div class="s" id="si">00</div>
+
+            </div>
+            <div id="heading_timer">
+                <div class="h_w">HH</div>
+                <div class="m_w">MM</div>
+                <div class="s_w">SS</div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src=script.js defer></script>
+</body>
+
+</html>
