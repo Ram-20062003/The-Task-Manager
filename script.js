@@ -89,10 +89,17 @@ function calendar(date_today) {
                 if (check) {
 
                     document.getElementById(String.fromCharCode(64 + k_check)).innerHTML = (num <= end ? num : aft);
-                    document.getElementById(String.fromCharCode(64 + k_check)).addEventListener('click', function(e) {
+                    document.getElementById(String.fromCharCode(64 + k_check)).addEventListener('click', function (e) {
                         a = document.getElementById(this.id).innerText + "/" + (date_first.getMonth() + 1).toString() + "/" + date_first.getFullYear().toString();
                         document.getElementById('task_date').innerHTML = a;
                         document.getElementById('task_date').style.color = "black";
+                        if (localStorage.getItem(a) == null || JSON.parse(localStorage.getItem(a)).length == 0)
+                            alert("No task yet Create your manager");
+                        else {
+                             var parsed_data = JSON.parse(localStorage.getItem(a));
+                            console.log(parsed_data)
+                            create_task(parsed_data, a)
+                        }
                         console.log(a);
                     })
 
@@ -181,39 +188,9 @@ function add() {
         }
     }
 
-    function create_task(data, a) {
-        for (let i = 0; i < data.length; i++) {
-            if (!(document.getElementById(data[i] + "/" + a))) {
-                var elem = document.createElement('li');
-                elem.setAttribute('id', data[i] + "/" + a);
-                elem.innerHTML = data[i];
-                add_li.appendChild(elem);
-            }
-            if (!(document.getElementById("btn" + data[i] + "/" + a))) {
-                var btn_elem = document.createElement('button');
-                btn_elem.setAttribute('class', 'delete');
-                btn_elem.setAttribute('id', "btn" + data[i] + "/" + a);
-                btn_elem.innerHTML = "Delete";
-                btn_elem.addEventListener('click', function() {
-                    console.log(this.id);
-                    let t_id = this.id.substring(3);
-                    console.log(t_id);
-                    let r_elem = document.getElementById(t_id).innerText.substring(0, document.getElementById(t_id).innerText.indexOf("Delete")).trim();
-                    let key = this.id.substring(this.id.indexOf("/") - 1);
-                    //remove_element(data, key, t_id);
-                    console.log(t_id);
-                })
-                elem.appendChild(btn_elem);
-            }
-        }
-    }
 
-    function remove_element(r_data, key, n_id) {
-        var filtered_data = r_data.filter(function(d) {
-            return d != document.getElementById(n_id).innerText.substring(0, document.getElementById(n_id).innerText.indexOf("del"));
-        });
-        console.log(filtered_data);
-    }
+
+
 
     function non_repeat(get_task, prev_data) {
         console.log(get_task);
@@ -232,4 +209,52 @@ function add() {
         }
         return chk_repeat;
     }
+
+
+}
+function create_task(data, a) {
+    // var date_title=document.createElement('li')
+    // date_title.innerHTML=a;
+    // add_li.appendChild(date_title);
+    for (let i = 0; i < data.length; i++) {
+        if (!(document.getElementById(data[i] + "/" + a))) {
+            var elem = document.createElement('li');
+            elem.setAttribute('id', data[i] + "/" + a);
+            elem.innerHTML = data[i];
+            add_li.appendChild(elem);
+        }
+        if (!(document.getElementById("btn" + data[i] + "/" + a))) {
+            var btn_elem = document.createElement('button');
+            btn_elem.setAttribute('class', 'delete');
+            btn_elem.setAttribute('id', "btn" + data[i] + "/" + a);
+            btn_elem.innerHTML = "Delete";
+            btn_elem.addEventListener('click', function () {
+                console.log(this.id);
+                let t_id = this.id.substring(3);
+                console.log(t_id);
+                let r_elem = document.getElementById(t_id).innerText.substring(0, document.getElementById(t_id).innerText.indexOf("Delete")).trim();
+                let key = this.id.substring(this.id.indexOf("/") - 1);
+                remove_element(data, key, t_id);
+                console.log(t_id);
+            })
+            elem.appendChild(btn_elem);
+        }
+    }
+}
+function remove_element(r_data, key, n_id) {
+
+    var delete_element = document.getElementById(n_id);
+    delete_element.remove();
+    var get_data = [];
+    console.log(delete_element.innerText.substring(0, delete_element.innerText.indexOf('D')));
+    get_data = JSON.parse(localStorage.getItem(key.substring(2)));
+    console.log(get_data);
+    var new_data = [];
+    for (let i = 0; i < get_data.length; i++) {
+        if (delete_element.innerText.substring(0, delete_element.innerText.indexOf('D')) != get_data[i])
+            new_data.push(get_data[i]);
+    }
+    console.log(new_data);
+    localStorage.setItem(key.substring(2), JSON.stringify(new_data));
+
 }
